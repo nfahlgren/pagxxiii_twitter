@@ -1,6 +1,7 @@
 library(twitteR)
 library(ROAuth)
 library(ggplot2)
+library(gridExtra)
 
 # Set working directory
 setwd('~/Scripts')
@@ -26,20 +27,23 @@ names(pag.tweets) <- c("User", "Tweets")
 pag.tweets <- pag.tweets[with(pag.tweets, order(-Tweets)), ]
 
 # Plot tweets per user for users with 30+ tweets
-ggplot(data=pag.tweets[pag.tweets$Tweets >= 30, ], aes(x=reorder(User, Tweets), y=Tweets)) +
-  geom_bar(stat='identity') +
-  coord_flip() +
-  scale_y_continuous("Tweets") +
-  scale_x_discrete("User") +
-  labs(title="#PAGXXIII tweets per user") +
-  theme_bw() +
-  theme(axis.title = element_text(face="bold"))
+p1 <- ggplot(data=pag.tweets[pag.tweets$Tweets >= 30, ], aes(x=reorder(User, Tweets), y=Tweets)) +
+             geom_bar(stat='identity') +
+             coord_flip() +
+             scale_y_continuous("Tweets") +
+             scale_x_discrete("User") +
+             labs(title="#PAGXXIII tweets per user") +
+             theme_bw() +
+             theme(axis.title = element_text(face="bold"))
 
 # Plot tweets per hour
-ggplot(data=tweets, aes(x=created)) +
-  geom_bar(binwidth=60*60) +
-  scale_x_datetime("Date-time") +
-  scale_y_continuous("Tweets") +
-  labs(title="#PAGXXIII tweets per hour") +
-  theme_bw() +
-  theme(axis.title = element_text(face="bold"))
+p2 <- ggplot(data=tweets, aes(x=created)) +
+             geom_bar(binwidth=60*60) +
+             scale_x_datetime("Date-time") +
+             scale_y_continuous("Tweets") +
+             labs(title="#PAGXXIII tweets per hour") +
+             theme_bw() +
+             theme(axis.title = element_text(face="bold"))
+
+# Plot both plots
+grid.arrange(p1, p2, nrow=1, ncol=2)
