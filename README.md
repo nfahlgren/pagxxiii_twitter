@@ -7,7 +7,7 @@ I used the twitteR and ROAuth packages. In this implementation you have to go to
 
 As a one-time setup you create authentication credentials.
 
-```
+```R
 # One-time authentication setup
 library(twitteR)
 library(ROAuth)
